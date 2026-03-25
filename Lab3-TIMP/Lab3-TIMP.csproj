@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>Lab3_TIMP</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="AuthLibrary">
+      <HintPath>..\..\AuthLibrary\AuthLibrary\bin\Debug\AuthLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="MenuLibrary">
+      <HintPath>..\..\MenuLibrary\MenuLibrary\bin\Debug\MenuLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
