@@ -20,11 +20,20 @@ namespace DataDrivenApp
         public LoginForm()
         {
             InitializeComponent();
+
+            pictureBoxLogo.Image = Image.FromFile("keys.png");
+            //pictureBoxLogo.BringToFront();
+
+            this.KeyPreview = true;
+            this.Load += LoginForm_Load;
+            this.InputLanguageChanged += LoginForm_InputLanguageChanged;
+            this.KeyDown += LoginForm_KeyDown;
+            this.Activated += LoginForm_Activated;
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private void BtnLogin_Click(object sender, EventArgs e)
         {
-            string login = txtLogin.Text.Trim();
+            string login = txtUsername.Text.Trim();
             string password = txtPassword.Text;
 
             if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
@@ -58,5 +67,58 @@ namespace DataDrivenApp
                 txtPassword.Focus();
             }
         }
+
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        #region Обработка состояний клавиатуры.
+
+        // Обновление отображения языка ввода
+        private void UpdateLanguageStatus()
+        {
+            InputLanguage currentLang = InputLanguage.CurrentInputLanguage;
+            string langName = currentLang.Culture.DisplayName;
+            lblLanguage.Text = $"Язык ввода: {langName}";
+        }
+
+        // Обновление отображения состояния CapsLock
+        private void UpdateCapsLockStatus()
+        {
+            bool capsOn = Control.IsKeyLocked(Keys.CapsLock);
+            lblCapsLock.Text = capsOn ? "CapsLock: вкл" : "CapsLock: выкл";
+        }
+
+        // Событие при загрузке формы
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            UpdateLanguageStatus();
+            UpdateCapsLockStatus();
+        }
+
+        // Событие при смене раскладки клавиатуры
+        private void LoginForm_InputLanguageChanged(object sender, InputLanguageChangedEventArgs e)
+        {
+            UpdateLanguageStatus();
+        }
+
+        // Событие при нажатии клавиши (отслеживаем CapsLock)
+        private void LoginForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.CapsLock)
+            {
+                UpdateCapsLockStatus();
+            }
+        }
+
+        // Событие при активации окна (на случай, если CapsLock изменился вне формы)
+        private void LoginForm_Activated(object sender, EventArgs e)
+        {
+            UpdateCapsLockStatus();
+            UpdateLanguageStatus();
+        }
+
+        #endregion
     }
 }

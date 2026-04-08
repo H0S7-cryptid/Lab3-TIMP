@@ -16,7 +16,7 @@ namespace DataDrivenApp
                 if (loginForm.ShowDialog() == DialogResult.OK)
                 {
                     var userRights = loginForm.AuthorizedUser;
-                    Application.Run(new MainForm(userRights));
+                    Application.Run(new MainForm(userRights, "menu.txt"));
                 }
                 else
                 {

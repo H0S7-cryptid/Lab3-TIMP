@@ -11,28 +11,25 @@ namespace DataDrivenApp
     {
         private readonly UserRights _userRights;
 
-        public MainForm(UserRights userRights)
+        public MainForm(UserRights userRights, string menuPath)
         {
             _userRights = userRights;
             InitializeComponent();
-            BuildMenu();
+            BuildMenu(menuPath);
         }
 
-        private void BuildMenu()
+        private void BuildMenu(string menuPath)
         {
-            // 1. Создаём словарь обработчиков на основе данных из menu.txt
-            var handlers = LoadHandlersFromFile("menu.txt");
+            var handlers = LoadHandlersFromFile(menuPath);
 
-            // 2. Загружаем структуру меню из файла
             var menuBuilder = new MenuBuilder();
-            if (!menuBuilder.LoadMenu("menu.txt"))
+            if (!menuBuilder.LoadMenu(menuPath))
             {
                 MessageBox.Show("Не удалось загрузить меню.", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // 3. Строим MenuStrip с учётом прав пользователя
             var menuStrip = menuBuilder.BuildMenuStrip(handlers, _userRights);
             this.MainMenuStrip = menuStrip;
             this.Controls.Add(menuStrip);
@@ -64,7 +61,7 @@ namespace DataDrivenApp
                     string methodName = parts[2];
 
                     // Создаём обработчик, который захватывает название пункта через замыкание
-                    Action handler = () => ShowMessage(itemText);
+                    void handler() => ShowMessage(itemText);
                     // Если метод уже есть в словаре, можно перезаписать (в задании дубликатов нет)
                     handlers[methodName] = handler;
                 }
